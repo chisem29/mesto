@@ -1,9 +1,9 @@
 .popup__item {
   max-width: 358px;
-  height: 27px;
   border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
   margin: 0 0 30px 36px;
   cursor: text;
+  padding-bottom: 13px;
 }
 
 @media screen and (max-width: 540px) {

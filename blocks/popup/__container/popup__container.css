@@ -6,6 +6,7 @@
   flex-direction: column;
   position: relative;
   margin: 0 auto;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
 }
 
 @media screen and (max-width: 540px) {

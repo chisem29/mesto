@@ -8,7 +8,6 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px); /* дядя-ревьювер, так реально лучше выглядит */
   z-index: 10;
   visibility: hidden;
 }
