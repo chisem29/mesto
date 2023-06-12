@@ -1,5 +1,5 @@
 // Находим попап, кнопку открытия попапа и кнопку закрытия попапа в документе
-let popup = document.querySelector('.popup__edit-profile');
+let popup = document.querySelector('.popup_edit-profile');
 let openPopupButton = document.querySelector('.profile__edit-button');
 let closePopupButton = document.querySelector('.popup__close-button');
 // Находим поля имени и статуса в профиле и в попапе
