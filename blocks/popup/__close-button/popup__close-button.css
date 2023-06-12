@@ -2,7 +2,7 @@
   width: 32px;
   height: 32px;
   background: none;
-  background-image: url(/images/icons/close_button.svg);
+  background-image: url(../../../images/icons/close_button.svg);
   border: none;
   position: absolute;
   right: -40px;
