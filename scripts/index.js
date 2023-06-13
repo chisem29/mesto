@@ -5,8 +5,8 @@ let closePopupButton = document.querySelector('.popup__close-button');
 // Находим поля имени и статуса в профиле и в попапе
 let profileName = document.querySelector('.profile__user-name');
 let profileStatus = document.querySelector('.profile__status');
-let popupNameInput = document.querySelector('.popup__input_name');
-let popupStatusInput = document.querySelector('.popup__input_status');
+let popupNameInput = document.querySelector('.popup__input_type_name');
+let popupStatusInput = document.querySelector('.popup__input_type_status');
 // Находим форму и кнопку сохранения в попапе
 let popupForm = document.querySelector('.popup__form');
 let saveButton = document.querySelector('.popup__save-button');

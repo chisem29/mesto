@@ -5,7 +5,7 @@
   color: #fff;
   margin: 0 0 -8px 0;
   padding: 0;
-  max-width: 294px;
+  max-width: 340px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -15,5 +15,6 @@
   .profile__user-name {
     font-size: 27px;
     line-height: 33px;
+    max-width: 220px;
   }  
 }
