@@ -1,19 +1,16 @@
-// Находим попап, кнопку открытия попапа и кнопку закрытия попапа в документе
+// Получаем ссылки на DOM-элементы
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const openPopupEditButton = document.querySelector('.profile__edit-button');
 const closeEditProfilePopupButton = document.querySelector('.popup__close-button');
 const popupAddCard = document.querySelector('.popup_add-card');
 const openPopupAddButton = document.querySelector('.profile__add-button');
 const closePopupAddButton = popupAddCard.querySelector('.popup__close-button');
-// Находим поля имени и статуса в профиле и в попапе
 const profileName = document.querySelector('.profile__user-name');
 const profileStatus = document.querySelector('.profile__status');
 const popupNameInput = document.querySelector('.popup__input_type_name');
 const popupStatusInput = document.querySelector('.popup__input_type_status');
-// Находим формы по их классам
 const editProfileForm = popupEditProfile.querySelector('.popup__form_edit-profile');
-const addCardForm = popupAddCard.querySelector('.popup__form_new-card')
-// Находим попап для открытия картинки и его элементы
+const addCardForm = popupAddCard.querySelector('.popup__form_new-card');
 const popupOpenPic = document.querySelector('.popup_open-pic');
 const popupImage = popupOpenPic.querySelector('.popup__image');
 const popupImageTitle = popupOpenPic.querySelector('.popup__title');
@@ -22,17 +19,31 @@ const addCardPopupPlaceInput = popupAddCard.querySelector('.popup__input_type_pl
 const addCardPopupPicInput = popupAddCard.querySelector('.popup__input_type_pic');
 
 
-// Функция для открытия попапа и присваивания значения инпутов
-function openPopup() {
-  popupNameInput.value = profileName.textContent;
-  popupStatusInput.value = profileStatus.textContent;
-
-  popupEditProfile.classList.add('popup_opened');
+// Функция для открытия любого Popup
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
-// Функция для закрытия попапа редактирования профиля
+// Функция для закрытия любого Popup
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
+
+// Функция установки значений полей ввода в форме редактирования профиля
+function setProfileInputValues() {
+  popupNameInput.value = profileName.textContent;
+  popupStatusInput.value = profileStatus.textContent;
+}
+
+// Функция для открытия Popup редактирования профиля
+function openEditPopup() {
+  setProfileInputValues();
+  openPopup(popupEditProfile);
+}
+
+// Функция для закрытия попапа редактирования профиля 
 function closeEditPopup() {
-  popupEditProfile.classList.remove('popup_opened');
+  closePopup(popupEditProfile);
 }
 
 // Функция для создания DOM-элемента карточки
@@ -47,7 +58,7 @@ function createCard(name, link) {
   const cardTitle = cardElement.querySelector('.cards__title');
   cardTitle.textContent = name;
 
-// Находим кнопку удаления в элементе карточки и добавляем ей слушатель событий
+  // Находим кнопку удаления в элементе карточки и добавляем ей слушатель событий
   const deleteButton = cardElement.querySelector('.cards__trash-btn');
   deleteButton.addEventListener('click', () => {
     deleteCard(cardElement);
@@ -78,9 +89,7 @@ function renderInitialCards() {
 
 // Функция для удаления карточки
 function deleteCard(cardElement) {
-  cardElement.remove()
-// Удаляем слушатели событий для избежания утечек памяти
-  cardElement.removeEventListener('click', deleteCard)
+  cardElement.remove();
 }
 
 // Функция для открытия попапа картинки
@@ -89,14 +98,15 @@ function openPicPopup(name, link) {
   popupImage.alt = name;
   popupImageTitle.textContent = name;
 
-  popupOpenPic.classList.add('popup_opened');
+  openPopup(popupOpenPic);
 }
 
 // Функция для закрытия попапа картинки
 function closePicPopup() {
-  popupOpenPic.classList.remove('popup_opened')
+  closePopup(popupOpenPic);
 }
 
+// Функция для добавления новой карточки
 function addNewCard(event) {
   event.preventDefault();
 
@@ -111,7 +121,7 @@ function addNewCard(event) {
   addCardForm.reset();
 
   // Закрываем попап
-  closeAddPopup();
+  closePopup(popupAddCard);
 }
 
 // Функция для обновления профиля и закрытия попапа редактирования профиля
@@ -121,24 +131,24 @@ function saveProfile(event) {
   profileName.textContent = popupNameInput.value;
   profileStatus.textContent = popupStatusInput.value;
 
-  closeEditPopup();
+  closePopup(popupEditProfile);
 }
 
 // Функция для открытия попапа добавления карточки
 function openAddPopup() {
-  popupAddCard.classList.add('popup_opened');
+  openPopup(popupAddCard);
 }
 
 // Функция для закрытия попапа добавления карточки
 function closeAddPopup() {
-  popupAddCard.classList.remove('popup_opened');
+  closePopup(popupAddCard);
 }
 
 // Прикрепляем функцию открытия попапа редактирования профиля к кнопке открытия попапа
-openPopupEditButton.addEventListener('click', openPopup);
+openPopupEditButton.addEventListener('click', openEditPopup);
 
 // Прикрепляем функцию закрытия попапа редактирования профиля к кнопке закрытия попапа
-closeEditProfilePopupButton.addEventListener('click', closeEditPopup);
+closeEditProfilePopupButton.addEventListener('click', () => closePopup(popupEditProfile));
 
 // Добавляем слушатель событий на форму попапа редактирования профиля для сохранения профиля
 editProfileForm.addEventListener('submit', saveProfile);
