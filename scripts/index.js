@@ -1,7 +1,7 @@
 // Находим попап, кнопку открытия попапа и кнопку закрытия попапа в документе
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const openPopupEditButton = document.querySelector('.profile__edit-button');
-const closePopupButton = document.querySelector('.popup__close-button');
+const closeEditProfilePopupButton = document.querySelector('.popup__close-button');
 const popupAddCard = document.querySelector('.popup_add-card');
 const openPopupAddButton = document.querySelector('.profile__add-button');
 const closePopupAddButton = popupAddCard.querySelector('.popup__close-button');
@@ -10,17 +10,16 @@ const profileName = document.querySelector('.profile__user-name');
 const profileStatus = document.querySelector('.profile__status');
 const popupNameInput = document.querySelector('.popup__input_type_name');
 const popupStatusInput = document.querySelector('.popup__input_type_status');
-// Находим форму и кнопку сохранения в попапе
-const popupForm = document.querySelector('.popup__form');
-const popupButton = document.querySelector('.popup__button');
 // Находим формы по их классам
-const editProfileForm = document.querySelector('.popup__form_edit-profile');
-const addCardForm = document.querySelector('.popup__form_new-card')
+const editProfileForm = popupEditProfile.querySelector('.popup__form_edit-profile');
+const addCardForm = popupAddCard.querySelector('.popup__form_new-card')
 // Находим попап для открытия картинки и его элементы
 const popupOpenPic = document.querySelector('.popup_open-pic');
 const popupImage = popupOpenPic.querySelector('.popup__image');
 const popupImageTitle = popupOpenPic.querySelector('.popup__title');
 const closePopupImageButton = popupOpenPic.querySelector('.popup__close-button');
+const addCardPopupPlaceInput = popupAddCard.querySelector('.popup__input_type_place');
+const addCardPopupPicInput = popupAddCard.querySelector('.popup__input_type_pic');
 
 
 // Функция для открытия попапа и присваивания значения инпутов
@@ -101,19 +100,15 @@ function closePicPopup() {
 function addNewCard(event) {
   event.preventDefault();
 
-  const placeInput = document.querySelector('.popup__input_type_place');
-  const picInput = document.querySelector('.popup__input_type_pic');
-
-  const placeName = placeInput.value;
-  const picLink = picInput.value;
+  const placeName = addCardPopupPlaceInput.value;
+  const picLink = addCardPopupPicInput.value;
 
   const newCardElement = createCard(placeName, picLink);
   const cardsContainer = document.querySelector('.cards')
   cardsContainer.prepend(newCardElement); // Добавляем новую карточку в начало массива
 
   // Очищаем поля ввода
-  placeInput.value = '';
-  picInput.value = '';
+  addCardForm.reset();
 
   // Закрываем попап
   closeAddPopup();
@@ -143,7 +138,7 @@ function closeAddPopup() {
 openPopupEditButton.addEventListener('click', openPopup);
 
 // Прикрепляем функцию закрытия попапа редактирования профиля к кнопке закрытия попапа
-closePopupButton.addEventListener('click', closeEditPopup);
+closeEditProfilePopupButton.addEventListener('click', closeEditPopup);
 
 // Добавляем слушатель событий на форму попапа редактирования профиля для сохранения профиля
 editProfileForm.addEventListener('submit', saveProfile);
