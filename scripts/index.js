@@ -1,7 +1,7 @@
 // Получаем ссылки на DOM-элементы
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const openPopupEditButton = document.querySelector('.profile__edit-button');
-const closeEditProfilePopupButton = document.querySelector('.popup__close-button');
+const closeEditProfilePopupButton = popupEditProfile.querySelector('.popup__close-button');
 const popupAddCard = document.querySelector('.popup_add-card');
 const openPopupAddButton = document.querySelector('.profile__add-button');
 const closePopupAddButton = popupAddCard.querySelector('.popup__close-button');
