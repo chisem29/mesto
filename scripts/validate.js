@@ -3,8 +3,10 @@
 const displayValidationError = (form, input, errorMsg) => {
   // Получаем элемент для отображения сообщения об ошибке
   const errorField = form.querySelector(`.${input.id}-error`);
+  // Получаем соответсвующий элемент label
+  const inputLabel = input.parentElement;
   // Добавляем класс, указывающий на ошибку в поле ввода
-  input.classList.add('popup__input_type-error');
+  inputLabel.classList.add('popup__input_type-error');
   // Заполняем текст ошибки в элементе для ошибки
   errorField.textContent = errorMsg;
   // Делаем элемент с ошибкой видимым
@@ -16,8 +18,10 @@ const displayValidationError = (form, input, errorMsg) => {
 const removeValidationError = (form, input) => {
   // Получаем элемент для отображения сообщения об ошибке
   const errorField = form.querySelector(`.${input.id}-error`);
+  // Получаем соответсвующий элемент label
+  const inputLabel = input.parentElement;
   // Удаляем класс, указывающий на ошибку в поле ввода
-  input.classList.remove('popup__input_type-error');
+  inputLabel.classList.remove('popup__input_type-error');
   // Делаем элемент с ошибкой невидимым
   errorField.classList.remove('popup__input-error_active');
   // Очищаем текст ошибки в элементе для ошибки
