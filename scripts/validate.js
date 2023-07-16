@@ -81,7 +81,7 @@ const addEventListeners = (form) => {
 
 // Функция для активации валидации формы
 // Принимает объект конфигурации в качестве аргумента
-const activateFormValidation = (config) => {
+const enableValidation = (config) => {
   // Получаем все формы, соответствующие селектору из конфигурации
   const forms = Array.from(document.querySelectorAll(config.formSelector));
 
@@ -108,7 +108,7 @@ const activateFormValidation = (config) => {
 };
 
 // Активируем валидацию формы с заданной конфигурацией
-activateFormValidation({
+enableValidation({
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
