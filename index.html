@@ -48,13 +48,13 @@
       <button type="button" class="popup__close-button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="popup" class="popup__form popup__form_edit-profile">
-        <label class="popup__item">
-          <input type="text" class="popup__input popup__input_type_name" name="name" placeholder="Введите имя" required minlength="2" maxlength="40">
-          <span class="popup__input-error"></span>
+        <label class="popup__item popup__item_name">
+          <input id="name-input" type="text" class="popup__input popup__input_type_name" name="name" placeholder="Введите имя" required minlength="2" maxlength="40">
+          <span class="popup__input-error name-input-error"></span>
         </label>
-        <label class="popup__item">
-          <input type="text" class="popup__input popup__input_type_status" name="status" placeholder="Введите статус" required minlength="2" maxlength="200">
-          <span class="popup__input-error"></span>
+        <label class="popup__item popup__item_status">
+          <input id="status-input" type="text" class="popup__input popup__input_type_status" name="status" placeholder="Введите статус" required minlength="2" maxlength="200">
+          <span class="popup__input-error status-input-error"></span>
         </label>
         <button type="submit" class="popup__button" disabled>Сохранить</button>
       </form>
@@ -66,11 +66,13 @@
       <button type="button" class="popup__close-button"></button>
       <h2 class="popup__title">Новое место</h2>
       <form name="popup" class="popup__form popup__form_new-card">
-        <label class="popup__item">
-          <input type="text" class="popup__input popup__input_type_place" name="place" placeholder="Название">
+        <label class="popup__item popup__item_place">
+          <input id="place-input" type="text" class="popup__input popup__input_type_place" name="place" placeholder="Название" minlength="2" maxlength="30" required>
+          <span class="popup__input-error place-input-error"></span>
         </label>
-        <label class="popup__item">
-          <input type="url" class="popup__input popup__input_type_pic" name="pic" placeholder="Ссылка на картинку">
+        <label class="popup__item popup__item_place-pic">
+          <input id="place-pic-input" type="url" class="popup__input popup__input_type_pic" name="pic" placeholder="Ссылка на картинку" required>
+          <span class="popup__input-error place-pic-input-error"></span>
         </label>
         <button type="submit" class="popup__button popup__button_add-card">Создать</button>
       </form>
