@@ -144,6 +144,23 @@ function closeAddPopup() {
   closePopup(popupAddCard);
 }
 
+// Функция для закрытия попапа по нажатию на ESC 
+function handleEscClose(event) {
+  if (event.code === 'Escape') {
+    const activePopup = document.querySelector('.popup_opened');
+    if (activePopup) {
+      closePopup(activePopup);
+    }
+  }
+};
+
+// Функция для закрытия попапа по нажатию на overlay
+function handleOverlayClick(event) {
+  if (event.target === event.currentTarget) {
+    closePopup(event.target);
+  }
+}
+
 // Прикрепляем функцию открытия попапа редактирования профиля к кнопке открытия попапа
 openPopupEditButton.addEventListener('click', openEditPopup);
 
@@ -164,6 +181,15 @@ addCardForm.addEventListener('submit', addNewCard);
 
 // Добавляем слушатель события закрытия попапа картинки
 closePopupImageButton.addEventListener('click', closePicPopup);
+
+// Добавляем глобальный слушатель события keydown на весь документ
+document.addEventListener('keydown', handleEscClose);
+
+// Добавляем слушатель события click на каждый попап
+const popups = document.querySelectorAll('.popup');
+popups.forEach((popup) => {
+  popup.addEventListener('click', handleOverlayClick);
+});
 
 // Вызываем функцию для отображения карточек при загрузке страницы
 renderInitialCards();
