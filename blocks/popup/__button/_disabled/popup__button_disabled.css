@@ -3,7 +3,13 @@
   background-color: transparent;
   color: #000;
   opacity: 0.18;
-  cursor: not-allowed;
+  cursor: auto;
   border-radius: 2px;
   border: 1px solid #000;
+  /* box-sizing: border-box; */
+  margin: 17px 36px 36px 36px;
+}
+
+.popup__button_disabled:hover {
+  opacity: 0.18;
 }

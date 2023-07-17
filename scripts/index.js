@@ -22,11 +22,15 @@ const addCardPopupPicInput = popupAddCard.querySelector('.popup__input_type_pic'
 // Функция для открытия любого Popup
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  // Добавляем слушатель события keydown с документа
+  document.addEventListener('keydown', handleEscClose);
 }
 
 // Функция для закрытия любого Popup
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  // Удаляем слушатель события keydown с документа
+  document.removeEventListener('keydown', handleEscClose);
 }
 
 // Функция установки значений полей ввода в форме редактирования профиля
@@ -181,9 +185,6 @@ addCardForm.addEventListener('submit', addNewCard);
 
 // Добавляем слушатель события закрытия попапа картинки
 closePopupImageButton.addEventListener('click', closePicPopup);
-
-// Добавляем глобальный слушатель события keydown на весь документ
-document.addEventListener('keydown', handleEscClose);
 
 // Добавляем слушатель события click на каждый попап
 const popups = document.querySelectorAll('.popup');
