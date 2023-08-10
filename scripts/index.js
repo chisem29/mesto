@@ -1,3 +1,6 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+
 // Получаем ссылки на DOM-элементы
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const openPopupEditButton = document.querySelector('.profile__edit-button');
