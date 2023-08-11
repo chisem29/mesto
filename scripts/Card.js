@@ -1,6 +1,6 @@
-// Класс Card для управления карточкам
+// Класс Card для управления карточками
 export default class Card {
-  // Конструктор класса, инициализирует свойства объекта карточки  
+  // Конструктор класса, инициализирует свойства объекта карточки
   constructor(name, link, cardTemplateSelector, handleImageClick) {
     this._name = name; // имя карточки
     this._link = link; // url изображения карточки
@@ -11,37 +11,35 @@ export default class Card {
   // Метод для удаления карточки
   _deleteCard() {
     this._element.remove();
+    this._element = null;
   }
 
   // Метод для переключения состояния "лайк"
   _toggleLike() {
-    this._element.querySelector('.cards__btn').classList.toggle('cards__btn_active');
+    this._likeButton.classList.toggle('cards__btn_active');
   }
 
   _handleImageClick() {
     this._handleImageClick(this._name, this._link);
   }
 
-  // Метод для установки обрработчиков событий карточки
+  // Метод для установки обработчиков событий карточки
   _setEventListeners() {
     this._element.querySelector('.cards__trash-btn').addEventListener('click', () => this._deleteCard());
-    this._element.querySelector('.cards__btn').addEventListener('click', () => this._toggleLike());
-    this._element.querySelector('.cards__image').addEventListener('click', () => this._handleImageClick());
+    this._likeButton.addEventListener('click', () => this._toggleLike());
+    this._imageElement.addEventListener('click', () => this._handleImageClick());
   }
 
   // Метод для генерации карточки из шаблона и установки свойств
   generateCard() {
     this._element = this._cardTemplate.querySelector('.cards__item').cloneNode(true);
-    this._element.querySelector('.cards__image').src = this._link;
-    this._element.querySelector('.cards__image').alt = this._name;
+    this._likeButton = this._element.querySelector('.cards__btn'); // Сохраняем ссылку на кнопку лайка
+    this._imageElement = this._element.querySelector('.cards__image'); // Сохраняем ссылку на изображение
+    this._imageElement.src = this._link;
+    this._imageElement.alt = this._name;
     this._element.querySelector('.cards__title').textContent = this._name;
     this._setEventListeners();
-  
-    const imageElement = this._element.querySelector('.cards__image');
-    imageElement.addEventListener('click', () => {
-      this._handleImageClick(this._name, this._link);
-    });
-  
+
     return this._element; // Возвращает сгенерированный элемент карточки
-  }  
+  }
 }
