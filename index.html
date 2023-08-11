@@ -49,11 +49,11 @@
       <h2 class="popup__title">Редактировать профиль</h2>
       <form name="popup" class="popup__form popup__form_edit-profile">
         <label class="popup__item popup__item_name">
-          <input id="name-input" type="text" class="popup__input popup__input_type_name" name="name" placeholder="Введите имя" required minlength="2" maxlength="40">
+          <input id="name-input" type="text" class="popup__input popup__input_type_name" name="name" placeholder="Введите имя" required minlength="2" maxlength="40" novalidate>
           <span class="popup__input-error name-input-error"></span>
         </label>
         <label class="popup__item popup__item_status">
-          <input id="status-input" type="text" class="popup__input popup__input_type_status" name="status" placeholder="Введите статус" required minlength="2" maxlength="200">
+          <input id="status-input" type="text" class="popup__input popup__input_type_status" name="status" placeholder="Введите статус" required minlength="2" maxlength="200" novalidate>
           <span class="popup__input-error status-input-error"></span>
         </label>
         <button type="submit" class="popup__button" disabled>Сохранить</button>
@@ -87,8 +87,7 @@
     </div>
   </section>
 
-<script src="./scripts/constants.js"></script>
-<script src="./scripts/validate.js"></script>
+<script type="module" src="./scripts/constants.js"></script>
 <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>

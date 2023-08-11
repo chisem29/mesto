@@ -1,10 +1,11 @@
 // Класс Card для управления карточкам
 export default class Card {
   // Конструктор класса, инициализирует свойства объекта карточки  
-  constructor(name, link, cardTemplateSelector) {
+  constructor(name, link, cardTemplateSelector, handleImageClick) {
     this._name = name; // имя карточки
     this._link = link; // url изображения карточки
     this._cardTemplate = document.querySelector(cardTemplateSelector).content; // шаблон карточки
+    this._handleImageClick = handleImageClick;
   }
 
   // Метод для удаления карточки
@@ -17,6 +18,9 @@ export default class Card {
     this._element.querySelector('.cards__btn').classList.toggle('cards__btn_active');
   }
 
+  _handleImageClick() {
+    this._handleImageClick(this._name, this._link);
+  }
 
   // Метод для установки обрработчиков событий карточки
   _setEventListeners() {
@@ -32,7 +36,12 @@ export default class Card {
     this._element.querySelector('.cards__image').alt = this._name;
     this._element.querySelector('.cards__title').textContent = this._name;
     this._setEventListeners();
-
+  
+    const imageElement = this._element.querySelector('.cards__image');
+    imageElement.addEventListener('click', () => {
+      this._handleImageClick(this._name, this._link);
+    });
+  
     return this._element; // Возвращает сгенерированный элемент карточки
-  }
+  }  
 }

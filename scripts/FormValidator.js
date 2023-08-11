@@ -11,6 +11,7 @@ export default class FormValidator {
   // Метод для отображения ошибки валидации
   _showInputError(inputElement, errorMessage) {
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const inputLabel = inputElement.parentElement;
     inputElement.classList.add(this._config.inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._config.errorClass);
@@ -19,6 +20,7 @@ export default class FormValidator {
   // Метод для скрытия ошибки валидации
   _hideInputError(inputElement) {
     const errorElement = this._formElement.querySelector(`.${inputElement.id}-error`);
+    const inputLabel = inputElement.parentElement;
     inputElement.classList.remove(this._config.inputErrorClass);
     errorElement.classList.remove(this._config.errorClass);
     errorElement.textContent = '';
@@ -45,14 +47,19 @@ export default class FormValidator {
 
   // Метод для переключения состояния кнопки отправки
   _toggleButtonState() {
-    if (this._hasInvalidInput()) {
-      this._buttonElement.setAttribute('disabled', true);
-      this._buttonElement.classList.add(this._config.inactiveButtonClass);
+    if (this._buttonElement) {
+      if (this._hasInvalidInput()) {
+        this._buttonElement.setAttribute('disabled', true);
+        this._buttonElement.classList.add(this._config.inactiveButtonClass);
+      } else {
+        this._buttonElement.removeAttribute('disabled');
+        this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+      }
     } else {
-      this._buttonElement.removeAttribute('disabled');
-      this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+      console.warn('Кнопка отправки не найдена');
     }
   }
+  
 
   // Метод для установки обработчиков событий валидации
   _setEventListeners() {

@@ -1,5 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
+import { initialCards } from './constants.js';
+import { validationConfig } from './constants.js';
 
 // Получаем ссылки на DOM-элементы
 const popupEditProfile = document.querySelector('.popup_edit-profile');
@@ -20,7 +22,12 @@ const popupImageTitle = popupOpenPic.querySelector('.popup__title');
 const closePopupImageButton = popupOpenPic.querySelector('.popup__close-button');
 const addCardPopupPlaceInput = popupAddCard.querySelector('.popup__input_type_place');
 const addCardPopupPicInput = popupAddCard.querySelector('.popup__input_type_pic');
+const editProfileValidator = new FormValidator(validationConfig, editProfileForm);
+const addCardValidator = new FormValidator(validationConfig, addCardForm);
 
+// Включение валидации
+editProfileValidator.enableValidation();
+addCardValidator.enableValidation();
 
 // Функция для открытия любого Popup
 function openPopup(popup) {
@@ -48,40 +55,10 @@ function openEditPopup() {
   openPopup(popupEditProfile);
 }
 
-// Функция для закрытия попапа редактирования профиля 
-function closeEditPopup() {
-  closePopup(popupEditProfile);
-}
-
 // Функция для создания DOM-элемента карточки
 function createCard(name, link) {
-  const cardTemplate = document.querySelector('#card-template').content;
-  const cardElement = cardTemplate.querySelector('.cards__item').cloneNode(true);
-
-  const cardImage = cardElement.querySelector('.cards__image');
-  cardImage.src = link;
-  cardImage.alt = name;
-
-  const cardTitle = cardElement.querySelector('.cards__title');
-  cardTitle.textContent = name;
-
-  // Находим кнопку удаления в элементе карточки и добавляем ей слушатель событий
-  const deleteButton = cardElement.querySelector('.cards__trash-btn');
-  deleteButton.addEventListener('click', () => {
-    deleteCard(cardElement);
-  });
-
-  const likeButton = cardElement.querySelector('.cards__btn');
-  likeButton.addEventListener('click', () => {
-    likeButton.classList.toggle('cards__btn_active');
-  });
-
-  // Добавляем слушатель событий для открытия попапа картинки
-  cardImage.addEventListener('click', () => {
-    openPicPopup(name, link);
-  });
-
-  return cardElement;
+  const card = new Card(name, link, '#card-template', openPicPopup)
+  return card.generateCard();
 }
 
 // Функция для добавления карточек на страницу
@@ -92,11 +69,6 @@ function renderInitialCards() {
     const cardElement = createCard(card.name, card.link);
     cardsContainer.appendChild(cardElement);
   });
-}
-
-// Функция для удаления карточки
-function deleteCard(cardElement) {
-  cardElement.remove();
 }
 
 // Функция для открытия попапа картинки
