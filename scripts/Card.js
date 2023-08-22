@@ -1,11 +1,11 @@
 // Класс Card для управления карточками
 export default class Card {
   // Конструктор класса, инициализирует свойства объекта карточки
-  constructor(name, link, cardTemplateSelector, handleImageClick) {
+  constructor(name, link, cardTemplateSelector, handleCardImageClick) {
     this._name = name; // имя карточки
     this._link = link; // url изображения карточки
     this._cardTemplate = document.querySelector(cardTemplateSelector).content; // шаблон карточки
-    this._handleImageClick = handleImageClick;
+    this._handleCardImageClick  = handleCardImageClick;
   }
 
   // Метод для удаления карточки
@@ -19,15 +19,15 @@ export default class Card {
     this._likeButton.classList.toggle('cards__btn_active');
   }
 
-  _handleImageClick() {
-    this._handleImageClick(this._name, this._link);
+  _onImageClick() {
+    this._handleCardImageClick(this._name, this._link);
   }
 
   // Метод для установки обработчиков событий карточки
   _setEventListeners() {
     this._element.querySelector('.cards__trash-btn').addEventListener('click', () => this._deleteCard());
     this._likeButton.addEventListener('click', () => this._toggleLike());
-    this._imageElement.addEventListener('click', () => this._handleImageClick());
+    this._imageElement.addEventListener('click', () => this._onImageClick());
   }
 
   // Метод для генерации карточки из шаблона и установки свойств
