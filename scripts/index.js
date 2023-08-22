@@ -1,9 +1,11 @@
+// Импортируем необходимые классы и константы
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards } from './constants.js';
 import { validationConfig } from './constants.js';
+import Section from './Section.js';
 
-// Получаем ссылки на DOM-элементы
+// Находим элементы на странице
 const popupEditProfile = document.querySelector('.popup_edit-profile');
 const openPopupEditButton = document.querySelector('.profile__edit-button');
 const closeEditProfilePopupButton = popupEditProfile.querySelector('.popup__close-button');
@@ -25,53 +27,41 @@ const addCardPopupPicInput = popupAddCard.querySelector('.popup__input_type_pic'
 const editProfileValidator = new FormValidator(validationConfig, editProfileForm);
 const addCardValidator = new FormValidator(validationConfig, addCardForm);
 
-// Включение валидации
+// Включаем валидацию для форм
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
-// Функция для открытия любого Popup
+// Открываем попап
 function openPopup(popup) {
   popup.classList.add('popup_opened');
-  // Добавляем слушатель события keydown с документа
   document.addEventListener('keydown', handleEscClose);
 }
 
-// Функция для закрытия любого Popup
+// Закрываем попап
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  // Удаляем слушатель события keydown с документа
   document.removeEventListener('keydown', handleEscClose);
 }
 
-// Функция установки значений полей ввода в форме редактирования профиля
+// Устанавливаем значения полей формы редактирования профиля
 function setProfileInputValues() {
   popupNameInput.value = profileName.textContent;
   popupStatusInput.value = profileStatus.textContent;
 }
 
-// Функция для открытия Popup редактирования профиля
+// Открываем попап редактирования профиля
 function openEditPopup() {
   setProfileInputValues();
   openPopup(popupEditProfile);
 }
 
-// Функция для создания DOM-элемента карточки
+// Создаем карточку
 function createCard(name, link) {
   const card = new Card(name, link, '#card-template', openPicPopup)
   return card.generateCard();
 }
 
-// Функция для добавления карточек на страницу
-function renderInitialCards() {
-  const cardsContainer = document.querySelector('.cards');
-
-  initialCards.forEach((card) => {
-    const cardElement = createCard(card.name, card.link);
-    cardsContainer.appendChild(cardElement);
-  });
-}
-
-// Функция для открытия попапа картинки
+// Открываем попап с картинкой
 function openPicPopup(name, link) {
   popupImage.src = link;
   popupImage.alt = name;
@@ -80,12 +70,12 @@ function openPicPopup(name, link) {
   openPopup(popupOpenPic);
 }
 
-// Функция для закрытия попапа картинки
+// Закрываем попап с картинкой
 function closePicPopup() {
   closePopup(popupOpenPic);
 }
 
-// Функция для добавления новой карточки
+// Добавляем новую карточку
 function addNewCard(event) {
   event.preventDefault();
 
@@ -93,17 +83,14 @@ function addNewCard(event) {
   const picLink = addCardPopupPicInput.value;
 
   const newCardElement = createCard(placeName, picLink);
-  const cardsContainer = document.querySelector('.cards')
-  cardsContainer.prepend(newCardElement); // Добавляем новую карточку в начало массива
+  cardsSection.prependItem(newCardElement);
 
-  // Очищаем поля ввода
   addCardForm.reset();
 
-  // Закрываем попап
   closePopup(popupAddCard);
 }
 
-// Функция для обновления профиля и закрытия попапа редактирования профиля
+// Сохраняем изменения профиля
 function saveProfile(event) {
   event.preventDefault();
 
@@ -113,17 +100,17 @@ function saveProfile(event) {
   closePopup(popupEditProfile);
 }
 
-// Функция для открытия попапа добавления карточки
+// Открываем попап добавления карточки
 function openAddPopup() {
   openPopup(popupAddCard);
 }
 
-// Функция для закрытия попапа добавления карточки
+// Закрываем попап добавления карточки
 function closeAddPopup() {
   closePopup(popupAddCard);
 }
 
-// Функция для закрытия попапа по нажатию на ESC 
+// Закрываем попап по нажатию Esc
 function handleEscClose(event) {
   if (event.code === 'Escape') {
     const activePopup = document.querySelector('.popup_opened');
@@ -131,44 +118,38 @@ function handleEscClose(event) {
       closePopup(activePopup);
     }
   }
-};
+}
 
-// Функция для закрытия попапа по нажатию на overlay
+// Закрываем попап по клику на оверлей
 function handleOverlayClick(event) {
   if (event.target === event.currentTarget) {
     closePopup(event.target);
   }
 }
 
-// Прикрепляем функцию открытия попапа редактирования профиля к кнопке открытия попапа
+// Вешаем обработчики событий
 openPopupEditButton.addEventListener('click', openEditPopup);
-
-// Прикрепляем функцию закрытия попапа редактирования профиля к кнопке закрытия попапа
 closeEditProfilePopupButton.addEventListener('click', () => closePopup(popupEditProfile));
-
-// Добавляем слушатель событий на форму попапа редактирования профиля для сохранения профиля
 editProfileForm.addEventListener('submit', saveProfile);
-
-// Добавляем обработчик события для кнопки открытия попапа добавления карточки
 openPopupAddButton.addEventListener('click', openAddPopup);
-
-// Добавляем слушатель событий закрытия попапа добавления карточки
 closePopupAddButton.addEventListener('click', closeAddPopup);
-
-// Добавляем слушатель событий на форму добавления новой карточки
 addCardForm.addEventListener('submit', addNewCard);
-
-// Добавляем слушатель события закрытия попапа картинки
 closePopupImageButton.addEventListener('click', closePicPopup);
 
-// Добавляем слушатель события click на каждый попап
 const popups = document.querySelectorAll('.popup');
 popups.forEach((popup) => {
   popup.addEventListener('click', handleOverlayClick);
 });
 
-// Вызываем функцию для отображения карточек при загрузке страницы
-renderInitialCards();
-
-//--------------------------------------------------------------------
-
+// Создаем экземпляр класса Section и отображаем карточки на странице
+const cardsSection = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const cardElement = createCard(cardData.name, cardData.link);
+      cardsSection.addItem(cardElement);
+    }
+  },
+  '.cards'
+);
+cardsSection.renderItems();
