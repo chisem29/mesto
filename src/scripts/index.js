@@ -5,16 +5,19 @@ import { validationConfig } from './constants.js';
 import PopupWithForm from './PopupWithForm.js';
 import PopupWithImage from './PopupWithImage.js';
 import Section from './Section.js';
+import UserInfo from './UserInfo.js';
 
 // Создаем экземпляры классов попапов
 const editProfilePopup = new PopupWithForm('.popup_edit-profile', (inputValues) => {
-  profileName.textContent = inputValues.name;
-  profileStatus.textContent = inputValues.status;
+  userInfo.setUserInfo({
+    name: inputValues.name,
+    status: inputValues.status
+  });
 });
 
 const addCardPopup = new PopupWithForm('.popup_add-card', (inputValues) => {
   const newCardElement = createCard(inputValues.place, inputValues.pic);
-  cardsSection.addItem(newCardElement);
+  cardsSection.prependItem(newCardElement);
 });
 
 const popupImage = new PopupWithImage('.popup_open-pic');
@@ -41,12 +44,14 @@ const cardsSection = new Section({
 }, '.cards');
 cardsSection.renderItems();
 
+const userInfo = new UserInfo({
+  userNameSelector: '.profile__user-name',
+  userStatusSelector: '.profile__status'
+});
+
 // Слушатели
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
-  const userData = {
-    name: document.querySelector('.profile__user-name').textContent,
-    status: document.querySelector('.profile__status').textContent
-  };
+  const userData = userInfo.getUserInfo();
 
   document.querySelector('.popup__input_type_name').value = userData.name;
   document.querySelector('.popup__input_type_status').value = userData.status;
