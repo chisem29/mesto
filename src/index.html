@@ -14,23 +14,29 @@
 
     <main class="content">
       <section class="profile">
-          <img src="<%=require('./images/kysto.jpg')%>" alt="Жак-Ив Кусто" class="profile__avatar">
-          <div class="profile__info">
-            <h1 class="profile__user-name">Жак-Ив Кусто</h1>
-            <button type="button" class="profile__edit-button"></button>
-            <p class="profile__status">Исследователь океана</p>
-          </div>
-          <button type="button" class="profile__add-button"></button>
+        <div class="profile__avatar-container">
+          <img src="<%=require('./images/icons/edit-avatar_button.svg')%>" alt="" class="profile__avatar-edit">
+          <img alt="Аватар" class="profile_avatar">
+        </div>
+        <div class="profile__info">
+          <h1 class="profile__user-name"></h1>
+          <button type="button" class="profile__edit-button"></button>
+          <p class="profile__status"></p>
+        </div>
+        <button type="button" class="profile__add-button"></button>
       </section>
 
       <section class="cards">
         <template id="card-template">
           <div class="cards__item">
             <button type="button" class="cards__trash-btn"></button>
-            <img src="./images/dombay.png" alt="Домбай" class="cards__image">
+            <img class="cards__image">
             <div class="cards__content">
-              <h2 class="cards__title">Домбай</h2>
-              <button type="button" class="cards__btn"></button>
+              <h2 class="cards__title"></h2>
+              <div class="cards__like">
+                <button type="button" class="cards__btn"></button>
+                <div class="cards__like-total"></div>
+              </div>
             </div>
           </div>
         </template>
@@ -83,6 +89,30 @@
       <button type="button" class="popup__close-button"></button>
       <img alt="Архыз" class="popup__image">
       <h2 class="popup__title popup__title_opened-card"></h2>
+    </div>
+  </section>
+
+  <section class="popup popup_delete-card">
+    <div class="popup__container">
+      <button class="popup__close-button popup__close-button_delete-card" type="button"></button>
+      <h2 class="popup__title popup__title_delete-card">Вы уверены?</h2>
+      <form class="popup__form popup__form_delete-card">
+        <button class="popup__button popup__button_delete-card" type="submit">Да</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="popup popup_edit-avatar">
+    <div class="popup__container">
+      <button class="popup__close-button popup__close-button_edit-avatar" type="button"></button>
+      <h2 class="popup__title popup__title_edit-avatar">Обновить аватар</h2>
+      <form class="popup__form popup__form_edit-avatar">
+        <label class="popup__item popup__item-avatar">
+          <input type="URL" name="avatar" id="avatar-input" class="popup__input popup__input_avatar" required>
+          <span class="avatar-input-error popup__input-error"></span>
+        </label>
+        <button class="popup__button popup__button-edit-avatar">Да</button>
+      </form>
     </div>
   </section>
 </body>

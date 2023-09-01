@@ -1,4 +1,5 @@
 .cards__trash-btn {
+  display: none;
   background: none;
   background-image: url(../../../images/icons/trash_button.svg);
   width: 18px;
