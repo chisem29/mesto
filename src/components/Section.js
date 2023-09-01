@@ -1,4 +1,4 @@
-import { baseUrl, token } from './api.js';
+import { baseUrl, token } from './Api.js';
 
 export default class Section {
   constructor({renderer}, containerSelector) {

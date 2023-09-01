@@ -1,4 +1,4 @@
-import { baseUrl, token } from './api.js';
+import { baseUrl, token } from './Api.js';
 
 export default class UserInfo {
   constructor({ userNameSelector, userAboutSelector, userAvatarSelector }) {
@@ -10,13 +10,7 @@ export default class UserInfo {
   init() {
     this._getUserInfo()
       .then(userData => {
-        this._name = userData.name;
-        this._about = userData.about;
-        this._avatar = userData.avatar;
-
-        this._userName.textContent = this._name;
-        this._userAbout.textContent = this._about;
-        this._userAvatar.src = this._avatar;
+        this._updateUI(userData);
       })
       .catch(err => {
         console.error("Произошла ошибка при получении данных пользователя:", err);
@@ -51,7 +45,37 @@ export default class UserInfo {
     this._name = name;
     this._about = about;
 
+    this._updateUI({ name, about });
+  }
+
+  async updateUserInfoOnServer({ name, about }) {
+    const response = await fetch(`${baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        about
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ошибка: ${response.status}`);
+    }
+
+    const data = await response.json();
+    this._updateUI(data);
+  }
+
+  _updateUI({ name, about, avatar }) {
+    this._name = name;
+    this._about = about;
+    this._avatar = avatar;
+
     this._userName.textContent = name;
     this._userAbout.textContent = about;
+    this._userAvatar.src = avatar;
   }
 }

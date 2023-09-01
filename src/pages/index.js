@@ -8,11 +8,15 @@ import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import './index.css';
 
-const editProfilePopup = new PopupWithForm('.popup_edit-profile', (inputValues) => {
-  userInfo.setUserInfo({
-    name: inputValues.name,
-    status: inputValues.status
-  });
+const editProfilePopup = new PopupWithForm('.popup_edit-profile', async (inputValues) => {
+  try {
+    await userInfo.updateUserInfoOnServer({
+      name: inputValues.name,
+      about: inputValues.status // Обратите внимание, что здесь должно быть 'about', если сервер ожидает этот ключ
+    });
+  } catch (err) {
+    console.error("Ошибка при обновлении данных пользователя:", err);
+  }
 });
 
 const addCardPopup = new PopupWithForm('.popup_add-card', (inputValues) => {
@@ -26,6 +30,7 @@ let nameInput = document.querySelector('.popup__input_type_place');
 let linkInput = document.querySelector('.popup__input_type_pic');
 document.querySelector('.profile__add-button').addEventListener('click', () => {
   addCardPopup.open();
+});
 
   addCardForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -42,7 +47,6 @@ document.querySelector('.profile__add-button').addEventListener('click', () => {
       .catch((err) => {
         console.error("Ошибка: ", err);
       });
-  });
 });
 
 const editProfileValidator = new FormValidator(validationConfig, document.querySelector('.popup__form_edit-profile'));
@@ -74,7 +78,7 @@ userInfo.init();
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
   document.querySelector('.popup__input_type_name').value = userData.name;
-  document.querySelector('.popup__input_type_status').value = userData.status;
+  document.querySelector('.popup__input_type_status').value = userData.about;
   editProfilePopup.open();
 });
 
