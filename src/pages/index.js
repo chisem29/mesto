@@ -7,7 +7,7 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
 import './index.css';
-// Создаем экземпляры классов попапов
+
 const editProfilePopup = new PopupWithForm('.popup_edit-profile', (inputValues) => {
   userInfo.setUserInfo({
     name: inputValues.name,
@@ -21,8 +21,30 @@ const addCardPopup = new PopupWithForm('.popup_add-card', (inputValues) => {
 });
 
 const popupImage = new PopupWithImage('.popup_open-pic');
+const addCardForm = document.querySelector('.popup__form_new-card');
+let nameInput = document.querySelector('.popup__input_type_place');
+let linkInput = document.querySelector('.popup__input_type_pic');
+document.querySelector('.profile__add-button').addEventListener('click', () => {
+  addCardPopup.open();
 
-// Валидация
+  addCardForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const data = {
+      name: nameInput.value,
+      link: linkInput.value
+    };
+    console.log("Отправляемые данные:", data);
+    cardsSection.publicAddCard(data)
+      .then((newCardData) => {
+        const cardElement = createCard(newCardData.name, newCardData.link);
+        cardsSection.addItem(cardElement);
+      })
+      .catch((err) => {
+        console.error("Ошибка: ", err);
+      });
+  });
+});
+
 const editProfileValidator = new FormValidator(validationConfig, document.querySelector('.popup__form_edit-profile'));
 const addCardValidator = new FormValidator(validationConfig, document.querySelector('.popup__form_new-card'));
 
@@ -34,7 +56,6 @@ function createCard(name, link) {
   return card.generateCard();
 }
 
-// Инициализация карточек при загрузке
 const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
@@ -42,25 +63,19 @@ const cardsSection = new Section({
     cardsSection.addItem(cardElement);
   },
 }, '.cards');
-cardsSection.renderItems();
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__user-name',
-  userStatusSelector: '.profile__status'
+  userAboutSelector: '.profile__status',
+  userAvatarSelector: '.profile__avatar'
 });
+userInfo.init();
 
-// Слушатели
 document.querySelector('.profile__edit-button').addEventListener('click', () => {
   const userData = userInfo.getUserInfo();
-
   document.querySelector('.popup__input_type_name').value = userData.name;
   document.querySelector('.popup__input_type_status').value = userData.status;
-  
   editProfilePopup.open();
-});
-
-document.querySelector('.profile__add-button').addEventListener('click', () => {
-  addCardPopup.open();
 });
 
 editProfilePopup.setEventListeners();
