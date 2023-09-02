@@ -1,13 +1,14 @@
 import { likeCard, unlikeCard } from './Api.js';
 export default class Card {
   // Конструктор класса, инициализирует свойства объекта карточки
-  constructor(name, link, cardTemplateSelector, handleCardImageClick, likes, id) {
+  constructor(name, link, cardTemplateSelector, handleCardImageClick, likes, id, userInfo) {
     this._name = name; // имя карточки
     this._link = link; // url изображения карточки
     this._cardTemplate = document.querySelector(cardTemplateSelector).content; // шаблон карточки
     this._handleCardImageClick  = handleCardImageClick;
     this._likes = likes;
     this._id = id;
+    this._userInfo = userInfo;
   }
 
   // Метод для удаления карточки
@@ -58,6 +59,10 @@ export default class Card {
     const likeCountElement = this._element.querySelector('.cards__like-total');
     likeCountElement.textContent = this._likes.length;
     this._element.dataset.id = this._id;
+    const currentUserId = this._userInfo.getUserId();
+    if (this._likes.some(user => user._id === currentUserId)) {
+      this._likeButton.classList.add('cards__btn_active');
+    }
 
     return this._element; // Возвращает сгенерированный элемент карточки
   }

@@ -57,7 +57,7 @@ editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
 function createCard(name, link, id, likes) {
-  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id);
+  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id, userInfo);
   return card.generateCard();
 }
 
