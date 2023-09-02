@@ -64,7 +64,7 @@ function createCard(name, link, id) {
 const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
-    const cardElement = createCard(item.name, item.link, item._id);
+    const cardElement = createCard(item.name, item.link, item._id, item.likes);
     cardsSection.addItem(cardElement);
   },
 }, '.cards');

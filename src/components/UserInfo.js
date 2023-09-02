@@ -89,7 +89,6 @@ export default class UserInfo {
     this._updateUI(data);
   }
 
-
   _updateUI({ name, about, avatar }) {
     this._name = name;
     this._about = about;
