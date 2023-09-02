@@ -42,7 +42,7 @@ addCardForm.addEventListener('submit', (evt) => {
   console.log("Отправляемые данные:", data);
   cardsSection.publicAddCard(data)
     .then((newCardData) => {
-      const cardElement = createCard(newCardData.name, newCardData.link);
+      const cardElement = createCard(newCardData.name, newCardData.link, newCardData._id);
       cardsSection.addItem(cardElement);
     })
     .catch((err) => {
@@ -56,15 +56,15 @@ const addCardValidator = new FormValidator(validationConfig, document.querySelec
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
-function createCard(name, link) {
-  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link));
+function createCard(name, link, id) {
+  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), [], id);
   return card.generateCard();
 }
 
 const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
-    const cardElement = createCard(item.name, item.link);
+    const cardElement = createCard(item.name, item.link, item._id);
     cardsSection.addItem(cardElement);
   },
 }, '.cards');
