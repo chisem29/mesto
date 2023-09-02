@@ -56,8 +56,8 @@ const addCardValidator = new FormValidator(validationConfig, document.querySelec
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
-function createCard(name, link, id) {
-  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), [], id);
+function createCard(name, link, id, likes) {
+  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id);
   return card.generateCard();
 }
 
