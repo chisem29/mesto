@@ -57,9 +57,21 @@ editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
 function createCard(name, link, id, likes) {
-  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id, userInfo);
+  const ownerId = userInfo.getUserId(); // Получение ID пользователя от объекта userInfo
+  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id, ownerId, userInfo);
   return card.generateCard();
 }
+
+
+const deleteCardPopup = new PopupWithForm('.popup_delete-card', async (cardId) => {
+  try {
+    await deleteCard(cardId);
+  } catch (err) {
+    console.error("Ошибка при удалении карточки:", err);
+  }
+});
+deleteCardPopup.setEventListeners();
+
 
 const cardsSection = new Section({
   items: initialCards,
@@ -68,6 +80,7 @@ const cardsSection = new Section({
     cardsSection.addItem(cardElement);
   },
 }, '.cards');
+
 
 const userInfo = new UserInfo({
   userNameSelector: '.profile__user-name',

@@ -1,23 +1,27 @@
-import { likeCard, unlikeCard } from './Api.js';
+import { likeCard, unlikeCard, deleteCard } from './Api.js';
+
 export default class Card {
-  // Конструктор класса, инициализирует свойства объекта карточки
-  constructor(name, link, cardTemplateSelector, handleCardImageClick, likes, id, userInfo) {
-    this._name = name; // имя карточки
-    this._link = link; // url изображения карточки
-    this._cardTemplate = document.querySelector(cardTemplateSelector).content; // шаблон карточки
-    this._handleCardImageClick  = handleCardImageClick;
+  constructor(name, link, cardTemplateSelector, handleCardImageClick, likes, id, ownerId, userInfo) {
+    this._name = name;
+    this._link = link;
+    this._cardTemplate = document.querySelector(cardTemplateSelector).content;
+    this._handleCardImageClick = handleCardImageClick;
     this._likes = likes;
     this._id = id;
+    this._ownerId = ownerId;
     this._userInfo = userInfo;
+    console.log("Arguments in constructor: ", arguments);
   }
 
-  // Метод для удаления карточки
   _deleteCard() {
-    this._element.remove();
-    this._element = null;
+    deleteCard(this._id)
+      .then(() => {
+        this._element.remove();
+        this._element = null;
+      })
+      .catch(error => console.error("Error deleting card:", error));
   }
 
-  // Метод для переключения состояния "лайк"
   async _toggleLike() {
     try {
       let updatedCardData;
@@ -35,35 +39,46 @@ export default class Card {
     }
   }
 
-
   _onImageClick() {
     this._handleCardImageClick(this._name, this._link);
   }
 
-  // Метод для установки обработчиков событий карточки
   _setEventListeners() {
-    this._element.querySelector('.cards__trash-btn').addEventListener('click', () => this._deleteCard());
     this._likeButton.addEventListener('click', () => this._toggleLike());
     this._imageElement.addEventListener('click', () => this._onImageClick());
+
+    const deleteButton = this._element.querySelector('.cards__trash-btn');
+    if (deleteButton) {
+      deleteButton.addEventListener('click', () => this._deleteCard());
+    }
   }
 
-  // Метод для генерации карточки из шаблона и установки свойств
   generateCard() {
     this._element = this._cardTemplate.querySelector('.cards__item').cloneNode(true);
-    this._likeButton = this._element.querySelector('.cards__btn'); // Сохраняем ссылку на кнопку лайка
-    this._imageElement = this._element.querySelector('.cards__image'); // Сохраняем ссылку на изображение
+    this._likeButton = this._element.querySelector('.cards__btn');
+    this._imageElement = this._element.querySelector('.cards__image');
     this._imageElement.src = this._link;
     this._imageElement.alt = this._name;
     this._element.querySelector('.cards__title').textContent = this._name;
-    this._setEventListeners();
-    const likeCountElement = this._element.querySelector('.cards__like-total');
-    likeCountElement.textContent = this._likes.length;
-    this._element.dataset.id = this._id;
+
     const currentUserId = this._userInfo.getUserId();
-    if (this._likes.some(user => user._id === currentUserId)) {
-      this._likeButton.classList.add('cards__btn_active');
+    const deleteButton = this._element.querySelector('.cards__trash-btn');
+    console.log("ownerId: ", this._ownerId);
+    console.log("currentUserId: ", currentUserId);
+
+    if (this._ownerId === currentUserId) {
+      deleteButton.classList.add('cards__trash-btn_active');
+      deleteButton.style.display = 'block';
+    } else {
+      deleteButton.classList.remove('cards__trash-btn_active');
+      deleteButton.style.display = 'none';
     }
 
-    return this._element; // Возвращает сгенерированный элемент карточки
+    this._setEventListeners();
+
+    const likeCountElement = this._element.querySelector('.cards__like-total');
+    likeCountElement.textContent = this._likes.length;
+
+    return this._element;
   }
 }

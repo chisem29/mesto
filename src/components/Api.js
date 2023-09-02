@@ -24,3 +24,14 @@ export function unlikeCard(cardId) {
   })
     .then(res => res.json());
 }
+
+export function deleteCard(cardId) {
+  return fetch(`${baseUrl}/cards/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: `${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json());
+}
