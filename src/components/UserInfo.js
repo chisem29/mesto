@@ -69,6 +69,27 @@ export default class UserInfo {
     this._updateUI(data);
   }
 
+  async updateUserAvatarOnServer(avatarUrl) {
+    const response = await fetch(`${baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: avatarUrl
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Ошибка: ${response.status}`);
+    }
+
+    const data = await response.json();
+    this._updateUI(data);
+  }
+
+
   _updateUI({ name, about, avatar }) {
     this._name = name;
     this._about = about;

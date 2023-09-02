@@ -12,7 +12,7 @@ const editProfilePopup = new PopupWithForm('.popup_edit-profile', async (inputVa
   try {
     await userInfo.updateUserInfoOnServer({
       name: inputValues.name,
-      about: inputValues.status // Обратите внимание, что здесь должно быть 'about', если сервер ожидает этот ключ
+      about: inputValues.status
     });
   } catch (err) {
     console.error("Ошибка при обновлении данных пользователя:", err);
@@ -28,25 +28,26 @@ const popupImage = new PopupWithImage('.popup_open-pic');
 const addCardForm = document.querySelector('.popup__form_new-card');
 let nameInput = document.querySelector('.popup__input_type_place');
 let linkInput = document.querySelector('.popup__input_type_pic');
+
 document.querySelector('.profile__add-button').addEventListener('click', () => {
   addCardPopup.open();
 });
 
-  addCardForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const data = {
-      name: nameInput.value,
-      link: linkInput.value
-    };
-    console.log("Отправляемые данные:", data);
-    cardsSection.publicAddCard(data)
-      .then((newCardData) => {
-        const cardElement = createCard(newCardData.name, newCardData.link);
-        cardsSection.addItem(cardElement);
-      })
-      .catch((err) => {
-        console.error("Ошибка: ", err);
-      });
+addCardForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const data = {
+    name: nameInput.value,
+    link: linkInput.value
+  };
+  console.log("Отправляемые данные:", data);
+  cardsSection.publicAddCard(data)
+    .then((newCardData) => {
+      const cardElement = createCard(newCardData.name, newCardData.link);
+      cardsSection.addItem(cardElement);
+    })
+    .catch((err) => {
+      console.error("Ошибка: ", err);
+    });
 });
 
 const editProfileValidator = new FormValidator(validationConfig, document.querySelector('.popup__form_edit-profile'));
@@ -82,6 +83,22 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
   editProfilePopup.open();
 });
 
+// Создание нового попапа для редактирования аватара
+const editAvatarPopup = new PopupWithForm('.popup__edit-avatar', async (inputValues) => {
+  try {
+    await userInfo.updateUserAvatarOnServer(inputValues.avatar);
+  } catch (err) {
+    console.error("Ошибка при обновлении аватара пользователя:", err);
+  }
+});
+
+// Слушатель для открытия попапа редактирования аватара
+document.querySelector('.profile__avatar-container').addEventListener('click', () => {
+  editAvatarPopup.open();
+});
+
+// Установка слушателей событий для всех попапов
+editAvatarPopup.setEventListeners();
 editProfilePopup.setEventListeners();
 addCardPopup.setEventListeners();
 popupImage.setEventListeners();
