@@ -1,7 +1,7 @@
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
-import { initialCards } from '../utils/constants.js';
-import { validationConfig } from '../utils/constants.js';
+import {initialCards} from '../utils/constants.js';
+import {validationConfig} from '../utils/constants.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import Section from '../components/Section.js';
@@ -56,9 +56,8 @@ const addCardValidator = new FormValidator(validationConfig, document.querySelec
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
-function createCard(name, link, id, likes) {
-  const ownerId = userInfo.getUserId(); // Получение ID пользователя от объекта userInfo
-  const card = new Card(name, link, '#card-template', (name, link) => popupImage.open(name, link), likes, id, ownerId, userInfo);
+function createCard(name, link, id, likes, owner) {
+  const card = new Card(name, link, '#card-template', owner, (name, link) => popupImage.open(name, link), likes, id, userInfo);
   return card.generateCard();
 }
 
@@ -76,7 +75,7 @@ deleteCardPopup.setEventListeners();
 const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
-    const cardElement = createCard(item.name, item.link, item._id, item.likes);
+    const cardElement = createCard(item.name, item.link, item._id, item.likes, item.owner);
     cardsSection.addItem(cardElement);
   },
 }, '.cards');

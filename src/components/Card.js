@@ -1,16 +1,17 @@
 import { likeCard, unlikeCard, deleteCard } from './Api.js';
 
 export default class Card {
-  constructor(name, link, cardTemplateSelector, handleCardImageClick, likes, id, ownerId, userInfo) {
+  constructor(name, link, cardTemplateSelector, owner, handleCardImageClick, likes, id, userInfo) {
     this._name = name;
     this._link = link;
     this._cardTemplate = document.querySelector(cardTemplateSelector).content;
     this._handleCardImageClick = handleCardImageClick;
     this._likes = likes;
     this._id = id;
-    this._ownerId = ownerId;
     this._userInfo = userInfo;
-    console.log("Arguments in constructor: ", arguments);
+    this._owner = owner;
+
+    // console.log("Arguments in constructor: ", arguments);
   }
 
   _deleteCard() {
@@ -63,10 +64,10 @@ export default class Card {
 
     const currentUserId = this._userInfo.getUserId();
     const deleteButton = this._element.querySelector('.cards__trash-btn');
-    console.log("ownerId: ", this._ownerId);
+    console.log("ownerId: ", this._owner._id);
     console.log("currentUserId: ", currentUserId);
 
-    if (this._ownerId === currentUserId) {
+    if (this._owner._id === currentUserId) {
       deleteButton.classList.add('cards__trash-btn_active');
       deleteButton.style.display = 'block';
     } else {
