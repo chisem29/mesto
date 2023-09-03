@@ -1,17 +1,15 @@
 import { likeCard, unlikeCard, deleteCard } from './Api.js';
 
 export default class Card {
-  constructor(name, link, cardTemplateSelector, owner, handleCardImageClick, likes, id, userInfo) {
-    this._name = name;
-    this._link = link;
+  constructor(item, cardTemplateSelector, handleCardImageClick) {
+    this._name = item.name;
+    this._link = item.link;
     this._cardTemplate = document.querySelector(cardTemplateSelector).content;
     this._handleCardImageClick = handleCardImageClick;
-    this._likes = likes;
-    this._id = id;
-    this._userInfo = userInfo;
-    this._owner = owner;
-
-    // console.log("Arguments in constructor: ", arguments);
+    this._likes = item.likes;
+    this._owner = item.owner;
+    this._id = item._id;
+    this.userId = 'd27dcfb3e5566acadc4d1e83'
   }
 
   _deleteCard() {
@@ -23,6 +21,19 @@ export default class Card {
       .catch(error => console.error("Error deleting card:", error));
   }
 
+  _searchLike() {
+    this._likes.forEach((like) => {
+      if(like._id === this.userId) {
+        this._likeButton.classList.add('cards__btn_active');
+      }
+      else {
+        this._likeButton.classList.remove('cards__btn_active');
+      }
+    })
+  }
+
+
+  //при лайке он отправляется на сервер
   async _toggleLike() {
     try {
       let updatedCardData;
@@ -35,6 +46,7 @@ export default class Card {
       this._likes = updatedCardData.likes;
       const likeCountElement = this._element.querySelector('.cards__like-total');
       likeCountElement.textContent = this._likes.length;
+
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -61,20 +73,16 @@ export default class Card {
     this._imageElement.src = this._link;
     this._imageElement.alt = this._name;
     this._element.querySelector('.cards__title').textContent = this._name;
-
-    const currentUserId = this._userInfo.getUserId();
     const deleteButton = this._element.querySelector('.cards__trash-btn');
-    console.log("ownerId: ", this._owner._id);
-    console.log("currentUserId: ", currentUserId);
 
-    if (this._owner._id === currentUserId) {
+    if (this._owner._id === this.userId) {
       deleteButton.classList.add('cards__trash-btn_active');
       deleteButton.style.display = 'block';
     } else {
       deleteButton.classList.remove('cards__trash-btn_active');
       deleteButton.style.display = 'none';
     }
-
+    this._searchLike()
     this._setEventListeners();
 
     const likeCountElement = this._element.querySelector('.cards__like-total');

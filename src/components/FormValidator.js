@@ -59,7 +59,7 @@ export default class FormValidator {
       console.warn('Кнопка отправки не найдена');
     }
   }
-  
+
 
   // Метод для установки обработчиков событий валидации
   _setEventListeners() {

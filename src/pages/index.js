@@ -19,35 +19,26 @@ const editProfilePopup = new PopupWithForm('.popup_edit-profile', async (inputVa
   }
 });
 
-const addCardPopup = new PopupWithForm('.popup_add-card', (inputValues) => {
-  const newCardElement = createCard(inputValues.place, inputValues.pic);
-  cardsSection.prependItem(newCardElement);
-});
-
-const popupImage = new PopupWithImage('.popup_open-pic');
-const addCardForm = document.querySelector('.popup__form_new-card');
-let nameInput = document.querySelector('.popup__input_type_place');
-let linkInput = document.querySelector('.popup__input_type_pic');
-
-document.querySelector('.profile__add-button').addEventListener('click', () => {
-  addCardPopup.open();
-});
-
-addCardForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+function addCallback(inputValues) {
   const data = {
-    name: nameInput.value,
-    link: linkInput.value
+    name: inputValues.place,
+    link: inputValues.pic,
   };
-  console.log("Отправляемые данные:", data);
   cardsSection.publicAddCard(data)
     .then((newCardData) => {
-      const cardElement = createCard(newCardData.name, newCardData.link, newCardData._id);
-      cardsSection.addItem(cardElement);
+      const cardElement = createCard(newCardData);
+      cardsSection.prependItem(cardElement);
     })
     .catch((err) => {
       console.error("Ошибка: ", err);
     });
+}
+
+const addCardPopup = new PopupWithForm('.popup_add-card', addCallback);
+const popupImage = new PopupWithImage('.popup_open-pic');
+
+document.querySelector('.profile__add-button').addEventListener('click', () => {
+  addCardPopup.open();
 });
 
 const editProfileValidator = new FormValidator(validationConfig, document.querySelector('.popup__form_edit-profile'));
@@ -56,8 +47,8 @@ const addCardValidator = new FormValidator(validationConfig, document.querySelec
 editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
-function createCard(name, link, id, likes, owner) {
-  const card = new Card(name, link, '#card-template', owner, (name, link) => popupImage.open(name, link), likes, id, userInfo);
+function createCard(item) {
+  const card = new Card(item, '#card-template', (name, link) => popupImage.open(name, link));
   return card.generateCard();
 }
 
@@ -75,7 +66,7 @@ deleteCardPopup.setEventListeners();
 const cardsSection = new Section({
   items: initialCards,
   renderer: (item) => {
-    const cardElement = createCard(item.name, item.link, item._id, item.likes, item.owner);
+    const cardElement = createCard(item);
     cardsSection.addItem(cardElement);
   },
 }, '.cards');

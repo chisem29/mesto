@@ -89,15 +89,10 @@ export default class UserInfo {
     this._updateUI(data);
   }
 
-  getUserId() {
-    return this._id;
-  }
-
-  _updateUI({ name, about, avatar, _id }) {
+  _updateUI({ name, about, avatar }) {
     this._name = name;
     this._about = about;
     this._avatar = avatar;
-    this._id = _id;
 
     this._userName.textContent = name;
     this._userAbout.textContent = about;
