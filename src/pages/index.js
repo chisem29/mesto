@@ -6,7 +6,19 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import Section from '../components/Section.js';
 import UserInfo from '../components/UserInfo.js';
+import { deleteCard } from '../components/Api.js';
 import './index.css';
+
+const deleteCardPopup = new PopupWithForm('.popup_delete-card', async () => {
+  try {
+    // Используем сохраненный _cardId для удаления карточки
+    await deleteCard(deleteCardPopup._cardId);
+  } catch (err) {
+    console.error("Ошибка при удалении карточки:", err);
+  }
+});
+
+deleteCardPopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm('.popup_edit-profile', async (inputValues) => {
   try {
@@ -48,19 +60,19 @@ editProfileValidator.enableValidation();
 addCardValidator.enableValidation();
 
 function createCard(item) {
-  const card = new Card(item, '#card-template', (name, link) => popupImage.open(name, link));
+  const card = new Card(item, '#card-template', (name, link) => popupImage.open(name, link), deleteCardPopup);
   return card.generateCard();
 }
 
 
-const deleteCardPopup = new PopupWithForm('.popup_delete-card', async (cardId) => {
+/*const deleteCardPopup = new PopupWithForm('.popup_delete-card', async (cardId) => {
   try {
     await deleteCard(cardId);
   } catch (err) {
     console.error("Ошибка при удалении карточки:", err);
   }
 });
-deleteCardPopup.setEventListeners();
+deleteCardPopup.setEventListeners();*/
 
 
 const cardsSection = new Section({

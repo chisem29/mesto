@@ -1,7 +1,7 @@
 import { likeCard, unlikeCard, deleteCard } from './Api.js';
 
 export default class Card {
-  constructor(item, cardTemplateSelector, handleCardImageClick) {
+  constructor(item, cardTemplateSelector, handleCardImageClick, deleteCardPopup) {
     this._name = item.name;
     this._link = item.link;
     this._cardTemplate = document.querySelector(cardTemplateSelector).content;
@@ -10,15 +10,11 @@ export default class Card {
     this._owner = item.owner;
     this._id = item._id;
     this.userId = 'd27dcfb3e5566acadc4d1e83'
+    this._deleteCardPopup = deleteCardPopup;
   }
 
-  _deleteCard() {
-    deleteCard(this._id)
-      .then(() => {
-        this._element.remove();
-        this._element = null;
-      })
-      .catch(error => console.error("Error deleting card:", error));
+  _deleteCard(deleteCardPopup) {
+    deleteCardPopup.openWithCardId(this._id);
   }
 
   _searchLike() {
@@ -59,10 +55,10 @@ export default class Card {
   _setEventListeners() {
     this._likeButton.addEventListener('click', () => this._toggleLike());
     this._imageElement.addEventListener('click', () => this._onImageClick());
-
+    // deleteButton.addEventListener('click', () => this._deleteCard(deleteCardPopup));
     const deleteButton = this._element.querySelector('.cards__trash-btn');
     if (deleteButton) {
-      deleteButton.addEventListener('click', () => this._deleteCard());
+      deleteButton.addEventListener('click', () => this._deleteCard(this._deleteCardPopup));
     }
   }
 
