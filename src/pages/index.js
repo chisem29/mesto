@@ -99,7 +99,7 @@ document.querySelector('.profile__edit-button').addEventListener('click', () => 
 });
 
 // Создание нового попапа для редактирования аватара
-const editAvatarPopup = new PopupWithForm('.popup__edit-avatar', async (inputValues) => {
+const editAvatarPopup = new PopupWithForm('.popup_edit-avatar', async (inputValues) => {
   try {
     await userInfo.updateUserAvatarOnServer(inputValues.avatar);
   } catch (err) {
