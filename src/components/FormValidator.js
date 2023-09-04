@@ -49,15 +49,32 @@ export default class FormValidator {
   _toggleButtonState() {
     if (this._buttonElement) {
       if (this._hasInvalidInput()) {
-        this._buttonElement.setAttribute('disabled', true);
-        this._buttonElement.classList.add(this._config.inactiveButtonClass);
+        this._callbackToogleBtn(true)
       } else {
-        this._buttonElement.removeAttribute('disabled');
-        this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+        this._callbackToogleBtn(false)
       }
     } else {
       console.warn('Кнопка отправки не найдена');
     }
+  }
+
+  _setStatusLoading() {
+    if (this._formElement.className.includes("profile")) {
+      this._buttonElement.textContent = "Сохранение...";
+    } else {
+      this._buttonElement.textContent = "Создание...";
+    }
+  }
+
+  _callbackToogleBtn(disabled) {
+    if (disabled) {
+      this._buttonElement.setAttribute("disabled", true);
+      this._buttonElement.classList.add(this._config.inactiveButtonClass);
+      return
+    }
+    this._buttonElement.removeAttribute("disabled");
+    this._buttonElement.classList.remove(this._config.inactiveButtonClass);
+    return
   }
 
   // Метод для установки обработчиков событий валидации
@@ -73,10 +90,14 @@ export default class FormValidator {
   // Метод для включения валидации формы
   enableValidation() {
     this._setEventListeners();
-    this._formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      this._buttonElement.textContent = 'Сохранение...' // Добавил изменение контента текста кнопки при отправки формы
+    this._formElement.addEventListener('submit', async (evt) => {
+      evt.preventDefault()
+      this._setStatusLoading()
+      this._callbackToogleBtn(true)
+      await setTimeout(() => location.reload(), 100)
+      
+      // Добавил изменение контента текста кнопки при отправки формы
     });
-    this._toggleButtonState();
+    this._toggleButtonState()
   }
 }
