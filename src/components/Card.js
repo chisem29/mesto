@@ -25,9 +25,8 @@ export default class Card {
       else {
         this._likeButton.classList.remove('cards__btn_active');
       }
-    })
+    }) 
   }
-
 
   //при лайке он отправляется на сервер
   async _toggleLike() {

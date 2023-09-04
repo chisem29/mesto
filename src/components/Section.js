@@ -12,13 +12,12 @@ export default class Section {
       })
   }
 
-  _getInitialCards() {
-    return fetch(`${baseUrl}/cards`, {
+  async _getInitialCards() {
+    return (await fetch(`${baseUrl}/cards`, {
       headers: {
         authorization: `${token}`
       }
-    })
-      .then(res => res.json())
+    })).json()
   }
 
   renderItems() {
@@ -35,8 +34,8 @@ export default class Section {
     this._container.prepend(element);
   }
 
-  _addCard(cardData) {
-    return fetch(`${baseUrl}/cards`, {
+  async _addCard(cardData) {
+    const res = await fetch(`${baseUrl}/cards`, {
       method: 'POST',
       headers: {
         authorization: `${token}`,
@@ -44,18 +43,14 @@ export default class Section {
       },
       body: JSON.stringify(cardData)
     })
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(`Ошибка: ${res.status}`);
-        }
-        return res.json();
-      })
+
+    if (!res.ok) {
+      throw new Error(`Ошибка: ${res.status}`);
+    }
+    return res.json();
   }
 
-  publicAddCard(cardData) {
-    return this._addCard(cardData)
-      .then((newCardData) => {
-        return newCardData;
-      });
+  async publicAddCard(cardData) {
+    return await this._addCard(cardData)
   }
 }

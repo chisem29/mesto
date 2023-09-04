@@ -60,7 +60,6 @@ export default class FormValidator {
     }
   }
 
-
   // Метод для установки обработчиков событий валидации
   _setEventListeners() {
     this._inputList.forEach((inputElement) => {
@@ -76,6 +75,7 @@ export default class FormValidator {
     this._setEventListeners();
     this._formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
+      this._buttonElement.textContent = 'Сохранение...' // Добавил изменение контента текста кнопки при отправки формы
     });
     this._toggleButtonState();
   }

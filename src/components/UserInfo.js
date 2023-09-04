@@ -17,28 +17,23 @@ export default class UserInfo {
       });
   }
 
-  _getUserInfo() {
-    return fetch(`${baseUrl}/users/me`, {
+  async _getUserInfo() {
+    const res = await fetch(`${baseUrl}/users/me`, {
       headers: {
         authorization: `${token}`
       }
     })
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(`Ошибка: ${res.status}`);
-        }
-        return res.json();
-      })
-      .catch(err => {
-        console.error("Ошибка при выполнении fetch:", err);
-      });
+    if (!res.ok) {
+      throw new Error(`Ошибка: ${res.status}`);
+    }
+    return res.json();
   }
 
   getUserInfo() {
     return {
-      name: this._name,
-      about: this._about
-    };
+      name: this._name ? "" : this._name,
+      about: this._about ? "" : this._about,
+    }; // Добавил обнуление полей 
   }
 
   setUserInfo({ name, about }) {
